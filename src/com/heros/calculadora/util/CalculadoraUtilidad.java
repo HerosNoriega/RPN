@@ -4,13 +4,6 @@ import java.util.Scanner;
 
 public class CalculadoraUtilidad {
 	
-	public static boolean operacionValida(String operacion) {
-		boolean operacionValidada = false;
-		
-		
-		
-		return operacionValidada;
-	}
 	
 	public static int validarRespuestaMenu(int min, int max) {
         //Reads user response
@@ -35,6 +28,7 @@ public class CalculadoraUtilidad {
             response = input.nextInt();
         }
         System.out.println("As seleccionado: " + response + "\n");
+        
         return response;
     }
 }

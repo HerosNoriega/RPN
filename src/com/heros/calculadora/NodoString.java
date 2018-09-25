@@ -1,22 +1,24 @@
 package com.heros.calculadora;
 
+import com.heros.calculadora.util.Ecuacion;
+
 public class NodoString {
-    String data;
+    Ecuacion data;
     NodoString link;
 
-    public NodoString() {
+	public NodoString() {
     }
 
-    public NodoString(String data) {
+    public NodoString(Ecuacion data) {
         this.data = data;
         link = null;
     }
 
-	public String getData() {
+	public Ecuacion getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Ecuacion data) {
 		this.data = data;
 	}
 

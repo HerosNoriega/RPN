@@ -1,5 +1,7 @@
 package com.heros.calculadora;
 
+import com.heros.calculadora.util.Ecuacion;
+
 public class Lista {
     private NodoString head;
     private NodoString tail;
@@ -24,7 +26,8 @@ public class Lista {
           System.out.println("Empty");
           return head;
         } else {
-          System.out.println("The First Node: \'" + head.data + "\'");
+          System.out.println("The First Node: \'" + head.data.getEcuacion() + 
+        		  									head.data.getResultado() + "\'");
           return head;
         }
     }
@@ -34,67 +37,72 @@ public class Lista {
         System.out.println("Empty");
         return head;
       } else {
-        System.out.println("The Last Node: \'" + tail.data + "\'");
+        System.out.println("The Last Node: \'" + tail.data.getEcuacion() + 
+        											tail.data.getResultado() + "\'");
         return tail;
       }
     }
+    
+    public void add(Ecuacion ecuacion, int position) {
+    	if(position > 0) {
+    		NodoString currentNode = new NodoString();
+    		NodoString nextNode = new NodoString();
+    		NodoString tempNode = new NodoString();
+    		tempNode.data = ecuacion;
+    		
+    		if(position == 1) {
+    			addFirst(ecuacion);
+    		} else if(position == size) {
+    			addLast(ecuacion);
+    		} else if(position < size && position > size) {
+    			System.out.println("Trying to add \'"  + "\' out of range in Position: " + position);
+    		} else {
+    			currentNode = head;
 
-    public void add(NodoString node, int position) {
+    	        int i = 1;
+    	        while(i < (position - 1)) {
+    	        	currentNode = currentNode.link;
+    	            i++;
+    	        }
 
-      if (position > 0) {
-    	  NodoString currentNode = new NodoString();
-    	  NodoString nextNode = new NodoString();
-        //Adds to the start of list
-        if (position == 1) {
-          addFirst(node);
+    	        	nextNode = currentNode.link;
+    	          currentNode.link = tempNode;
+    	          tempNode.link = nextNode;
+    	        
+    	        System.out.println("Added: \'" + ecuacion.getEcuacion() + " : " + 
+    	        		ecuacion.getResultado() +"\' in Position: " + position);
 
-        } else if (position == size) {
-
-          addLast(node);
-
-        } else if (position < size && position > size) {
-          System.out.println("Trying to add \'" + node.data + "\' out of range in Position: " + position);
-        }else {
-
-          currentNode = head;
-
-          int i = 1;
-          while(i < (position - 1)) {
-            currentNode = currentNode.link;
-            i++;
-          }
-
-          nextNode = currentNode.link;
-          currentNode.link = node;
-          node.link = nextNode;
-          System.out.println("Added: \'" + node.data + "\' in Position: " + position);
-
-          size++;
-        }
-      }
+    	        size++;
+    			
+    		}
+    	}
     }
 
-
-    public void addFirst(NodoString node) {
+    public void addFirst(Ecuacion ecuacion) {
     	NodoString newNode = new NodoString();
-      newNode = node;
+      
+      newNode.data = ecuacion;
+      newNode.link = null;
 
       if (isEmpty()) {
           head = newNode;
           tail = head;
-          System.out.println("Added: \'" + node.data + "\' in Position: " + 1);
+          System.out.println("Added: \'" + ecuacion.getEcuacion() + " Resultado " + 
+        		  							ecuacion.getResultado() + "\' in Position: " + 1);
       } else {
         newNode.link = head;
         head = newNode;
-        System.out.println("Added: \'" + node.data + "\' in Position: " + 1);
+        System.out.println("Added: \'" + ecuacion.getEcuacion() + " Resultado " +
+        									ecuacion.getResultado() + "\' in Position: " + 1);
       }
       size++;
     }
-
-    public void addLast(NodoString node) {
+    
+    public void addLast(Ecuacion node) {
     	NodoString newNode = new NodoString();
 
-      newNode = node;
+      newNode.data = node;
+      newNode.link = null;
 
       if (isEmpty()) {
         addFirst(node);
@@ -105,7 +113,7 @@ public class Lista {
         }
         currentNode.link = newNode;
         tail = newNode;
-        System.out.println("Added: \'" + node.data + "\' in Position: " + (size() + 1));
+        System.out.println("Added: \'" + node.getEcuacion() + "\' in Position: " + (size() + 1));
       }
       size++;
     }
@@ -175,7 +183,7 @@ public class Lista {
         for (int i = 0; i < position - 1; i++) {
           currentNode = currentNode.link;
         }
-        System.out.println("Getting: \'" + currentNode.data + "\' in Position: " + position);
+        //System.out.println("Getting: \'" + currentNode.data + "\' in Position: " + position);
       } else {
         System.out.println("No Node found in position: " + position);
       }
@@ -209,11 +217,90 @@ public class Lista {
           int counter = 1;
 
           while (currentNode.link != null) {
-              System.out.println(counter + " > " + "Data: \'" + currentNode.data + "\'");
+              System.out.println(counter + " > " + "Data: \'" + currentNode.data.getEcuacion() + " : " + 
+            		  											currentNode.data.getResultado() + "\'");
               currentNode = currentNode.link;
               counter++;
           }
-          System.out.println(counter + " > " + "Data: \'" + currentNode.data + "\'");
+          System.out.println(counter + " > " + "Data: \'" + currentNode.data.getEcuacion() + " : " + 
+        		  											currentNode.data.getResultado() + "\'");
         }
     }
+    
+    public void ordenarAscendente() {
+		if(size == 0) {
+			System.out.println("No hay datos");
+			
+		} else if(size == 1) {
+			System.out.println("No hay datos que ordenar");
+			
+		} else if (size > 1){
+			
+			NodoString auxiliar = head;
+
+		    for(int i = 0; i < size; i ++){
+		      
+		      NodoString menor = auxiliar;
+		      NodoString auxiliarComparacion = auxiliar.link;
+
+		      for(int j = 1; j < size; j++){
+
+		        if(auxiliarComparacion == null){
+		          break;
+		        }
+		        
+		        
+		        if(menor.data.getResultado() > auxiliarComparacion.data.getResultado()) {
+		          menor = auxiliarComparacion;
+		        }
+		        auxiliarComparacion = auxiliarComparacion.link;
+		      }
+
+		      Ecuacion temporal = auxiliar.data;
+		      auxiliar.data = menor.data;
+		      menor.data = temporal;
+
+		      auxiliar = auxiliar.link;
+		    }
+		}
+	}
+
+    public void ordenarDescendente() {
+		if(size == 0) {
+			System.out.println("No hay datos");
+			
+		} else if(size == 1) {
+			System.out.println("No hay datos que ordenar");
+			
+		} else if (size > 1){
+			
+			NodoString auxiliar = head;
+
+		    for(int i = 0; i < size; i ++){
+		      
+		      NodoString menor = auxiliar;
+		      NodoString auxiliarComparacion = auxiliar.link;
+
+		      for(int j = 1; j < size; j++){
+
+		        if(auxiliarComparacion == null){
+		          break;
+		        }
+		        
+		        
+		        if(menor.data.getResultado() < auxiliarComparacion.data.getResultado()) {
+		          menor = auxiliarComparacion;
+		        }
+		        auxiliarComparacion = auxiliarComparacion.link;
+		      }
+
+		      Ecuacion temporal = auxiliar.data;
+		      auxiliar.data = menor.data;
+		      menor.data = temporal;
+
+		      auxiliar = auxiliar.link;
+		    }
+		}
+	}
+
 }
