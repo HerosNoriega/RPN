@@ -12,6 +12,11 @@ public class Main {
 
 	}
 	
+	/**
+	 * showMenu() es una funcion que va a mostar el menu cuando sea necesario 
+	 * durante la vida del programa
+	 */
+	
 	public static void showMenu() {
 		int salir = 0;
 		

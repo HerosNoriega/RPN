@@ -16,6 +16,11 @@ public class Calculadora {
 	public static Lista lista = new Lista();
 	static int counter = 1;
 	
+	/**
+	 * calcularOperacion() calcula la operacion de los datos ingresados en el array 
+	 * puede manejar operandos y operadores de tipo string por ejemplo: SUM, LESS, DIV, TIMES.
+	 * @param tokens obtiene un array de tipo String
+	 */
 	public static void calcularOperacion(String[] tokens){
 		
 		boolean error = false;
@@ -78,22 +83,28 @@ public class Calculadora {
 			nodoTemporal.setEcuacion(ecuacion);
 			nodoTemporal.setResultado(resultado);
 			
-			//nodoTemporal.setData(ecuacion + " Resultado: " + resultadoString);
-			//nodoTemporal.setResultado(resultado);
 			agregarALista(nodoTemporal);
 		}
 	}
 	
+	/**
+	 * agregarALista() agrega la ecuacion a la lista 
+	 * @param ecuacion la ecuacion a obtener para ingresar a la lista 
+	 */
 	public static void agregarALista(Ecuacion ecuacion) {
-		if (lista.isEmpty()) {
-			lista.addFirst(ecuacion);
+		if (lista.estaVacio()) {
+			lista.agregarPrimero(ecuacion);
 			counter++;
 		} else {
-			lista.add(ecuacion, counter);
+			lista.agregar(ecuacion, counter);
 			counter++;
 		}
 	}
 	
+	/**
+	 * obtenerEcuacion() le pedira al usuario ingresar la ecuacion para ser evualada
+	 * y resolvida 
+	 */
 	public static void obtenerEcuacion() {
 		Scanner scan = new Scanner(System.in);
 		boolean ecuacionValida = false;
@@ -116,6 +127,12 @@ public class Calculadora {
 		} while (ecuacionValida != false);
 	}
 	
+	/**
+	 * getTokens obtiene la ecuacion en tipo String y es ingresada el un array de tipo String
+	 * @param ecuacion donde ingresaremos la ecuacion de tipo String 
+	 * @return retornara un array de String con los tokens esperados y separados por un espacio
+	 * siempre siendo analizados si son validos
+	 */
 	public static String[] getTokens(String ecuacion) {
 		
 		StringTokenizer tokenizer = new StringTokenizer(ecuacion, " ");
@@ -131,12 +148,18 @@ public class Calculadora {
 		return tokens;
 	}
 	
+	/**
+	 * escribirReporte() una funcion para escribir archivos en este caso 
+	 * un solo archivo y los datos persisten despues de crearse el archivo 
+	 * con nombre.
+	 * @param nombreArchivo resivira el nombre a darsele al archivo
+	 */
 	public static void escribirReporte(String nombreArchivo) {
 		File archivo = new File(nombreArchivo);
 		String contenido = " ";
 		for(int i = 0; i < Calculadora.counter - 1; i++) {
-			contenido = contenido + "\n" + "Ecuación: " + Calculadora.lista.get(i+1).data.getEcuacion() +
-										" Resultado: " + Calculadora.lista.get(i+1).data.getResultado() ;
+			contenido = contenido + "\n" + "Ecuación: " + Calculadora.lista.get(i+1).getEcuacion() +
+										" Resultado: " + Calculadora.lista.get(i+1).getResultado() ;
 		}
 		
 		try {
@@ -162,6 +185,11 @@ public class Calculadora {
 		}
 	}
 	
+	/**
+	 * balanceEcuacion() obtiene un array de tokens a analizar si existe un balance en la ecuacion
+	 * @param tokens tipo Array de strings que seria analizo para verificar el balance
+	 * @return retorna variable balance de tipo boolean para confirmar si es balanceado o no.
+	 */
 	public static boolean balanceEcuacion(String[] tokens) {
 		boolean balance;
 		
